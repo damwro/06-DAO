@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class AbstractDAO {
+public abstract class AbstractDAO {
 
     private final static SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
             .addAnnotatedClass(DriverDetail.class)

@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import java.util.List;
 import java.util.Optional;
 
-public class DriverDAO extends AbstractDAO implements DAOInterface<Driver> {
+public class DriverDAO extends AbstractDAO implements DriverDAOInterface<Driver> {
 
     public DriverDAO() {
     }
@@ -30,7 +30,7 @@ public class DriverDAO extends AbstractDAO implements DAOInterface<Driver> {
     }
 
     @Override
-    public void save(Driver driver) {
+    public void save(Object driver) {
         Session currentSession = getCurrentSession();
         currentSession.save(driver);
         commitTransaction(currentSession);
@@ -38,9 +38,9 @@ public class DriverDAO extends AbstractDAO implements DAOInterface<Driver> {
     }
 
     @Override
-    public void update(Driver driver) {
+    public void update(Object driver) {
         Session currentSession = getCurrentSession();
-        Driver databaseDriver = currentSession.get(Driver.class, driver.getId());
+        Driver databaseDriver = currentSession.get(Driver.class, ((Driver)driver).getId());
         if (databaseDriver != null) {
             currentSession.update(databaseDriver);
         }
@@ -48,9 +48,17 @@ public class DriverDAO extends AbstractDAO implements DAOInterface<Driver> {
     }
 
     @Override
-    public void delete(Driver driver) {
+    public void delete(Object driver) {
         Session currentSession = getCurrentSession();
         currentSession.delete(driver);
         commitTransaction(currentSession);
+    }
+
+    @Override
+    public List<Driver> getDriverbyLastName(String lastName) {
+        Session currentSession = getCurrentSession();
+        List resultList = currentSession.createQuery("from Driver d where d.lastName = '" + lastName +"'").getResultList();
+
+        return resultList;
     }
 }

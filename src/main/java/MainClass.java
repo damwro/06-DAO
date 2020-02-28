@@ -1,17 +1,27 @@
 import DAO.DriverDAO;
+import DAO.DriverDAOInterface;
 import entity.Driver;
 
+import java.util.List;
 import java.util.Optional;
 
 public class MainClass {
 
     public static void main(String[] args) {
-        DriverDAO dao = new DriverDAO();
 
-        Optional<Driver> driver = dao.get(1L);
+        DriverDAOInterface<Driver> driverDAO = new DriverDAO();
 
-        driver.ifPresent(value -> System.out.println(value.getFirstName()));
+        Optional driver = driverDAO.get(1L);
 
-        dao.save(new Driver("Jan", "Turek"));
+        driver.ifPresent(value -> System.out.println(((Driver)value).getFirstName()));
+
+        driverDAO.save(new Driver("Kamil", "Turek"));
+
+        List<Driver> turek = driverDAO.getDriverbyLastName("Turek");
+
+        if(turek.size()>0){
+            System.out.println("Pobrano poprzez DriverDAO");
+            turek.forEach(System.out::println);
+        }
     }
 }
