@@ -32,7 +32,7 @@ public class DriverDAO extends AbstractDAO implements DriverDAOInterface<Driver>
     @Override
     public void save(Object driver) {
         Session currentSession = getCurrentSession();
-        currentSession.save(driver);
+        currentSession.save((Driver) driver);
         commitTransaction(currentSession);
 
     }
@@ -40,9 +40,9 @@ public class DriverDAO extends AbstractDAO implements DriverDAOInterface<Driver>
     @Override
     public void update(Object driver) {
         Session currentSession = getCurrentSession();
-        Driver databaseDriver = currentSession.get(Driver.class, ((Driver)driver).getId());
+        Driver databaseDriver = currentSession.get(Driver.class, ((Driver) driver).getId());
         if (databaseDriver != null) {
-            currentSession.update(databaseDriver);
+            currentSession.update(driver);
         }
         commitTransaction(currentSession);
     }
@@ -57,7 +57,7 @@ public class DriverDAO extends AbstractDAO implements DriverDAOInterface<Driver>
     @Override
     public List<Driver> getDriverbyLastName(String lastName) {
         Session currentSession = getCurrentSession();
-        List resultList = currentSession.createQuery("from Driver d where d.lastName = '" + lastName +"'").getResultList();
+        List resultList = currentSession.createQuery("from Driver d where d.lastName = '" + lastName + "'").getResultList();
 
         return resultList;
     }
